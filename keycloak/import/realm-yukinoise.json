@@ -1,0 +1,114 @@
+{
+  "id": "yukinoise",
+  "realm": "yukinoise",
+  "displayName": "Yukinoise",
+  "enabled": true,
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "verifyEmail": false,
+  "resetPasswordAllowed": true,
+  "defaultDefaultClientScopes": [
+    "profile",
+    "email",
+    "roles",
+    "web-origins",
+    "acr"
+  ],
+  "defaultOptionalClientScopes": [
+    "address",
+    "phone",
+    "offline_access",
+    "microprofile-jwt"
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "Default Yukinoise user"
+      },
+      {
+        "name": "admin",
+        "description": "Yukinoise administrator"
+      },
+      {
+        "name": "offline_access",
+        "description": "Offline access"
+      },
+      {
+        "name": "uma_authorization",
+        "description": "UMA authorization"
+      }
+    ]
+  },
+  "defaultRoles": [
+    "user",
+    "offline_access",
+    "uma_authorization"
+  ],
+  "clients": [
+    {
+      "clientId": "yukinoise-api",
+      "name": "Yukinoise API Audience",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "bearerOnly": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": false
+    },
+    {
+      "clientId": "yukinoise-desktop",
+      "name": "Yukinoise Desktop",
+      "protocol": "openid-connect",
+      "enabled": true,
+      "publicClient": true,
+      "bearerOnly": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://127.0.0.1:8765/*"
+      ],
+      "webOrigins": [
+        "http://127.0.0.1:8765"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://127.0.0.1:8765/*",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "oidc.ciba.grant.enabled": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-yukinoise-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "yukinoise-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "profile",
+        "email",
+        "roles",
+        "web-origins",
+        "acr"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
+    }
+  ]
+}

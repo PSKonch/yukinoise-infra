@@ -16,7 +16,7 @@ services:
     image: quay.io/keycloak/keycloak:26.0
     container_name: yukinoise-keycloak
     depends_on: [postgres]
-    command: ["start-dev"]
+    command: ["start-dev", "--import-realm"]
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/${KC_DB_NAME:-keycloak_db}
@@ -34,6 +34,8 @@ services:
       # dev-options
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import:ro
     networks: [yuki]
     expose:
       - "8080"
