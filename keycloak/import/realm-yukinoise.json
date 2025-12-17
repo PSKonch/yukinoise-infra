@@ -1,5 +1,4 @@
 {
-  "id": "yukinoise",
   "realm": "yukinoise",
   "displayName": "Yukinoise",
   "enabled": true,
@@ -15,8 +14,7 @@
     "email",
     "roles",
     "web-origins",
-    "acr",
-    "groups"
+    "acr"
   ],
   "defaultOptionalClientScopes": [
     "address",
@@ -87,19 +85,8 @@
     "offline_access",
     "uma_authorization"
   ],
-  "clientScopeMappings": {
-    "yukinoise-desktop": [
-      {
-        "client": "yukinoise-desktop",
-        "roles": [
-          "user"
-        ]
-      }
-    ]
-  },
   "clients": [
     {
-      "id": "yukinoise-api",
       "clientId": "yukinoise-api",
       "name": "Yukinoise API Audience",
       "protocol": "openid-connect",
@@ -113,7 +100,6 @@
       "fullScopeAllowed": false
     },
     {
-      "id": "yukinoise-desktop",
       "clientId": "yukinoise-desktop",
       "name": "Yukinoise Desktop",
       "protocol": "openid-connect",
@@ -125,12 +111,13 @@
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
       "redirectUris": [
-        "http://127.0.0.1/*",
-        "http://localhost/*",
-        "yukinoise://callback/*"
+        "http://127.0.0.1:*",
+        "http://localhost:*",
+        "yukinoise://callback"
       ],
       "webOrigins": [
-        "+"
+        "http://127.0.0.1",
+        "http://localhost"
       ],
       "attributes": {
         "pkce.code.challenge.method": "S256",
@@ -138,7 +125,6 @@
       },
       "protocolMappers": [
         {
-          "id": "audience-mapper",
           "name": "audience-yukinoise-api",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-audience-mapper",
@@ -150,22 +136,6 @@
           }
         },
         {
-          "id": "realm-roles-mapper",
-          "name": "realm roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "multiValued": "true",
-            "userinfo.token.claim": "true",
-            "id.token.claim": "true",
-            "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
-          }
-        },
-        {
-          "id": "groups-mapper",
           "name": "groups",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-group-membership-mapper",
@@ -179,7 +149,6 @@
           }
         },
         {
-          "id": "profile-id-mapper",
           "name": "profile_id",
           "protocol": "openid-connect",
           "protocolMapper": "oidc-usermodel-attribute-mapper",
@@ -199,8 +168,7 @@
         "email",
         "roles",
         "web-origins",
-        "acr",
-        "groups"
+        "acr"
       ],
       "optionalClientScopes": [
         "address",
@@ -210,7 +178,6 @@
       ]
     },
     {
-      "id": "svc-releases",
       "clientId": "svc-releases",
       "name": "Service: Releases",
       "protocol": "openid-connect",
@@ -221,36 +188,9 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
-      "secret": "svc-releases-secret-placeholder",
-      "clientAuthenticatorType": "client-secret-basic",
-      "attributes": {
-        "oidc.client.secret.creation.date": "0"
-      },
-      "protocolMappers": [
-        {
-          "id": "service-roles",
-          "name": "service-roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "multiValued": "true",
-            "userinfo.token.claim": "false",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ]
+      "clientAuthenticatorType": "client-secret-basic"
     },
     {
-      "id": "svc-music",
       "clientId": "svc-music",
       "name": "Service: Music",
       "protocol": "openid-connect",
@@ -261,36 +201,9 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
-      "secret": "svc-music-secret-placeholder",
-      "clientAuthenticatorType": "client-secret-basic",
-      "attributes": {
-        "oidc.client.secret.creation.date": "0"
-      },
-      "protocolMappers": [
-        {
-          "id": "service-roles",
-          "name": "service-roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "multiValued": "true",
-            "userinfo.token.claim": "false",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ]
+      "clientAuthenticatorType": "client-secret-basic"
     },
     {
-      "id": "svc-social",
       "clientId": "svc-social",
       "name": "Service: Social",
       "protocol": "openid-connect",
@@ -301,36 +214,9 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
-      "secret": "svc-social-secret-placeholder",
-      "clientAuthenticatorType": "client-secret-basic",
-      "attributes": {
-        "oidc.client.secret.creation.date": "0"
-      },
-      "protocolMappers": [
-        {
-          "id": "service-roles",
-          "name": "service-roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "multiValued": "true",
-            "userinfo.token.claim": "false",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ]
+      "clientAuthenticatorType": "client-secret-basic"
     },
     {
-      "id": "svc-discovery",
       "clientId": "svc-discovery",
       "name": "Service: Discovery",
       "protocol": "openid-connect",
@@ -341,36 +227,9 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
-      "secret": "svc-discovery-secret-placeholder",
-      "clientAuthenticatorType": "client-secret-basic",
-      "attributes": {
-        "oidc.client.secret.creation.date": "0"
-      },
-      "protocolMappers": [
-        {
-          "id": "service-roles",
-          "name": "service-roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "multiValued": "true",
-            "userinfo.token.claim": "false",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ]
+      "clientAuthenticatorType": "client-secret-basic"
     },
     {
-      "id": "svc-notifications",
       "clientId": "svc-notifications",
       "name": "Service: Notifications",
       "protocol": "openid-connect",
@@ -381,65 +240,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": true,
-      "secret": "svc-notifications-secret-placeholder",
-      "clientAuthenticatorType": "client-secret-basic",
-      "attributes": {
-        "oidc.client.secret.creation.date": "0"
-      },
-      "protocolMappers": [
-        {
-          "id": "service-roles",
-          "name": "service-roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "multiValued": "true",
-            "userinfo.token.claim": "false",
-            "id.token.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "realm_access.roles",
-            "jsonType.label": "String"
-          }
-        }
-      ],
-      "defaultClientScopes": [
-        "profile",
-        "email",
-        "roles"
-      ]
-    }
-  ],
-  "scopeMappings": [
-    {
-      "client": "svc-releases",
-      "roles": [
-        "service"
-      ]
-    },
-    {
-      "client": "svc-music",
-      "roles": [
-        "service"
-      ]
-    },
-    {
-      "client": "svc-social",
-      "roles": [
-        "service"
-      ]
-    },
-    {
-      "client": "svc-discovery",
-      "roles": [
-        "service"
-      ]
-    },
-    {
-      "client": "svc-notifications",
-      "roles": [
-        "service"
-      ]
+      "clientAuthenticatorType": "client-secret-basic"
     }
   ]
 }
