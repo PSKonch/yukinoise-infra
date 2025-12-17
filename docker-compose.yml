@@ -11,12 +11,19 @@ services:
       - pg_data:/var/lib/postgresql/data
       - ./postgres/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     networks: [yuki]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_SUPERUSER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
     container_name: yukinoise-keycloak
-    depends_on: [postgres]
-    command: ["start-dev"]
+    depends_on:
+      postgres:
+        condition: service_started
+    command: ["start-dev", "--import-realm"]
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/${KC_DB_NAME:-keycloak_db}
@@ -31,12 +38,24 @@ services:
 
       KC_HTTP_RELATIVE_PATH: /auth
 
-      # dev-options
+      # Network and hostname settings
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HTTP_ENABLED: "true"
+
+      # Logging
+      KC_LOG_LEVEL: info
+    volumes:
+      - ./keycloak/import:/opt/keycloak/data/import:ro
     networks: [yuki]
     expose:
       - "8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   redis:
     image: redis:7
@@ -44,6 +63,12 @@ services:
     ports:
       - "6379:6379"
     networks: [yuki]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -55,6 +80,11 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks: [yuki]
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   minio:
     image: minio/minio:latest
@@ -69,16 +99,30 @@ services:
     volumes:
       - minio_data:/data
     networks: [yuki]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:1.27
     container_name: yukinoise-nginx
-    depends_on: [keycloak]
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      minio:
+        condition: service_started
     ports:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks: [yuki]
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/auth/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   yuki:
